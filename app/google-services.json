@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "305597391994",
+    "firebase_url": "https://commuchat-ca082.firebaseio.com",
+    "project_id": "commuchat-ca082",
+    "storage_bucket": "commuchat-ca082.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305597391994:android:491ee1809e2a3547",
+        "android_client_info": {
+          "package_name": "com.namyoon.commuchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305597391994-rj3e6vqqfagaam0oc73n5ptlao6ren6t.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "305597391994-rj3e6vqqfagaam0oc73n5ptlao6ren6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRJeTV648Kdhq8XvPoORALldlKvV5-cYQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

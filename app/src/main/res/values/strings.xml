@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">CommuChat</string>
+    <string name="app_subtitle">let\'s commute!</string>
+    <string name="login_id">id:</string>
+    <string name="login_ph">ph:</string>
+    <string name="login_userid">enter your id</string>
+    <string name="login_userph">enter your phone no.</string>
+    <string name="login_login">login</string>
+    <string name="login_rgst">register</string>
+</resources>
