@@ -94,8 +94,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "select a user.", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    Toast.makeText(MainActivity.this, targetPhone, Toast.LENGTH_SHORT).show();
-                    return;
+                    Toast.makeText(MainActivity.this, "commuting.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    intent.putExtra("user_name", userID);
+                    intent.putExtra("target_phone", targetPhone);
+                    startActivity(intent);
                 }
             }
         });
