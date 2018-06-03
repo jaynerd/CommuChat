@@ -22,8 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText idText;
     private EditText phoneText;
 
-    private String userID;
-    private String phoneNumber;
+//    private String userID;
+//    private String phoneNumber;
 
     private boolean isLoginClicked = false;
 
@@ -44,8 +44,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isLoginClicked = true;
-                userID = idText.getText().toString();
-                phoneNumber = phoneText.getText().toString();
+                final String userID = idText.getText().toString();
+                final String phoneNumber = phoneText.getText().toString();
                 if (userID.equals("")) {
                     Toast.makeText(LoginActivity.this, "enter id.", Toast.LENGTH_SHORT).show();
                     return;
@@ -61,12 +61,18 @@ public class LoginActivity extends AppCompatActivity {
                             String storedUserID = (String) dataSnapshot.getValue();
                             if (storedUserID == null) {
                                 Toast.makeText(LoginActivity.this, "account not found. register first.", Toast.LENGTH_SHORT).show();
+                                return;
                             } else if (isLoginClicked) {
-                                userRef.child(userID).setValue(phoneNumber);
-                                Toast.makeText(LoginActivity.this, "logged in.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                intent.putExtra("name", userID);
-                                startActivity(intent);
+                                String storedPhone = (String) dataSnapshot.getValue();
+                                if (phoneNumber.compareToIgnoreCase(storedPhone) == 0) {
+                                    Toast.makeText(LoginActivity.this, "logged in.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("name", userID);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "ph does not match.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
                             }
                         }
 
@@ -84,8 +90,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isLoginClicked = false;
                 final boolean[] flag = {true};
-                userID = idText.getText().toString();
-                phoneNumber = phoneText.getText().toString();
+                final String userID = idText.getText().toString();
+                final String phoneNumber = phoneText.getText().toString();
                 if (userID.equals("")) {
                     Toast.makeText(LoginActivity.this, "enter id.", Toast.LENGTH_SHORT).show();
                     return;
@@ -94,25 +100,28 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "enter phone number.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                userRef.child(userID).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String storedUserID = (String) dataSnapshot.getValue();
-                        if (storedUserID == null) {
-                            flag[0] = false;
-                            userRef.child(userID).setValue(phoneNumber);
-                            Toast.makeText(LoginActivity.this, "registered successfully.", Toast.LENGTH_SHORT).show();
+                if (!isLoginClicked) {
+                    userRef.child(userID).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String storedUserID = (String) dataSnapshot.getValue();
+                            if (storedUserID == null) {
+                                flag[0] = false;
+                                userRef.child(userID).setValue(phoneNumber);
+                                Toast.makeText(LoginActivity.this, "registered successfully.", Toast.LENGTH_SHORT).show();
+                            }
+                            if (flag[0] == true) {
+                                Toast.makeText(LoginActivity.this, "you already have an account.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                         }
-                        if (flag[0] == true) {
-                            Toast.makeText(LoginActivity.this, "you already have an account.", Toast.LENGTH_SHORT).show();
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                    });
+                }
             }
         });
     }
