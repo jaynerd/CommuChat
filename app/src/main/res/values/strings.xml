@@ -7,4 +7,5 @@
     <string name="login_userph">enter your phone no.</string>
     <string name="login_login">login</string>
     <string name="login_rgst">register</string>
+    <string name="title_activity_gmap">Map</string>
 </resources>
