@@ -1,5 +1,6 @@
 package com.namyoon.commuchat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -43,18 +44,29 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isLoginClicked = true;
-                phoneNumber = phoneText.getText().toString();
                 userID = idText.getText().toString();
+                phoneNumber = phoneText.getText().toString();
+                if (userID.equals("")) {
+                    Toast.makeText(LoginActivity.this, "enter id.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (phoneNumber.equals("")) {
+                    Toast.makeText(LoginActivity.this, "enter phone number.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (isLoginClicked) {
-                    userRef.child(phoneNumber).addValueEventListener(new ValueEventListener() {
+                    userRef.child(userID).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String userPhone = (String) dataSnapshot.getValue();
-                            if (userPhone == null) {
-                                Toast.makeText(LoginActivity.this, "no account found. register first.", Toast.LENGTH_SHORT).show();
+                            String storedUserID = (String) dataSnapshot.getValue();
+                            if (storedUserID == null) {
+                                Toast.makeText(LoginActivity.this, "account not found. register first.", Toast.LENGTH_SHORT).show();
                             } else if (isLoginClicked) {
-                                userRef.child(phoneNumber).setValue(userID);
+                                userRef.child(userID).setValue(phoneNumber);
                                 Toast.makeText(LoginActivity.this, "logged in.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                intent.putExtra("name", userID);
+                                startActivity(intent);
                             }
                         }
 
@@ -72,15 +84,23 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 isLoginClicked = false;
                 final boolean[] flag = {true};
-                phoneNumber = phoneText.getText().toString();
                 userID = idText.getText().toString();
-                userRef.child(phoneNumber).addValueEventListener(new ValueEventListener() {
+                phoneNumber = phoneText.getText().toString();
+                if (userID.equals("")) {
+                    Toast.makeText(LoginActivity.this, "enter id.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (phoneNumber.equals("")) {
+                    Toast.makeText(LoginActivity.this, "enter phone number.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                userRef.child(userID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String userPhone = (String) dataSnapshot.getValue();
-                        if (userPhone == null) {
+                        String storedUserID = (String) dataSnapshot.getValue();
+                        if (storedUserID == null) {
                             flag[0] = false;
-                            userRef.child(phoneNumber).setValue(userID);
+                            userRef.child(userID).setValue(phoneNumber);
                             Toast.makeText(LoginActivity.this, "registered successfully.", Toast.LENGTH_SHORT).show();
                         }
                         if (flag[0] == true) {
